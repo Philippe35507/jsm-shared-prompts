@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { signOut } from "next-auth/react";
 
 const Nav = () => {
   const isUserLoggedIn = true;
@@ -26,6 +27,9 @@ const Nav = () => {
             <Link href="/create-prompt" className="black_btn">
               Create Post
             </Link>
+            <button type="button" onClick={signOut} className="outline_btn">
+              Sign Out
+            </button>
           </div>
         ) : (
           <></>
