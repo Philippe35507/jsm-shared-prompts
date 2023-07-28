@@ -3,12 +3,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { SignIn, signOut, getProviders } from "next-auth/react";
+import { signIn, signOut, getProviders } from "next-auth/react";
 
 const Nav = () => {
-  const isUserLoggedIn = false;
+  const isUserLoggedIn = true;
 
   const [providers, setProviders] = useState(null);
+
+  const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {
     const setProviders = async () => {
@@ -59,7 +61,48 @@ const Nav = () => {
                 <button
                   type="button"
                   key={provider.name}
-                  onClick={() => SignIn(provider.id)}
+                  onClick={() => signIn(provider.id)}
+                  className="black-btn"
+                >
+                  Sign in
+                </button>
+              ))}
+          </>
+        )}
+      </div>
+
+      {/* Mobile navigation */}
+      <div className="sm:hidden flex relative">
+        {isUserLoggedIn ? (
+          <div className="flex">
+            <Image
+              src="/assets/images/logo.svg"
+              width={37}
+              height={37}
+              className="rounded-full"
+              alt="profile"
+              onClick={() => setToggleDropdown((prev) => !prev)}
+            />
+            {toggleDropdown && (
+              <div className="dropdown">
+                <Link
+                  href="/profile"
+                  className="dropdown_link"
+                  onClick={() => setToggleDropdown(false)}
+                >
+                  My Profile
+                </Link>
+              </div>
+            )}
+          </div>
+        ) : (
+          <>
+            {providers &&
+              Object.values(providers).map((provider) => (
+                <button
+                  type="button"
+                  key={provider.name}
+                  onClick={() => signIn(provider.id)}
                   className="black-btn"
                 >
                   Sign In
